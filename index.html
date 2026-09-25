@@ -8,25 +8,14 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-  :root {
-    --bg: #ffffff;
-    --card: #ffffff;
-    --gold: #c98f00;
-    --blue: #1e7ad0;
-    --navy: #0b4f9e;
-    --text: #152238;
-    --dim: #5f6f8a;
-    --border: #dde4ee;
-  }
-
   html, body {
     height: 100%;
+    background: #ffffff;
   }
 
   body {
     font-family: "Segoe UI", Roboto, Arial, sans-serif;
-    background: #ffffff;
-    color: var(--text);
+    color: #152238;
     line-height: 1.4;
   }
 
@@ -47,24 +36,20 @@
   .entry-card {
     width: 100%;
     max-width: 340px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 22px 20px 24px;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    padding: 24px 20px;
     text-align: center;
-    box-shadow: 0 18px 50px rgba(15, 40, 80, 0.18);
-    animation: rise .45s ease;
   }
 
   .entry-card .banner {
     width: 100%;
-    border-radius: 10px;
-    margin-bottom: 14px;
     display: block;
+    margin-bottom: 16px;
   }
 
   .entry-card p.question {
-    color: var(--dim);
+    color: #5f6f8a;
     font-size: 14px;
     margin: 10px 0 12px;
   }
@@ -73,15 +58,14 @@
     width: 100%;
     padding: 13px 14px;
     font-size: 16px;
-    border-radius: 10px;
-    border: 2px solid #c4d0e1;
+    border: 1px solid #c4d0e1;
     background: #ffffff;
-    color: var(--text);
+    color: #152238;
     outline: none;
     text-align: center;
   }
 
-  .entry-card input:focus { border-color: var(--blue); }
+  .entry-card input:focus { border-color: #1e7ad0; }
   .entry-card input::placeholder { color: #9aa8bf; }
 
   .entry-card button {
@@ -90,40 +74,26 @@
     padding: 14px;
     font-size: 16px;
     font-weight: 700;
-    letter-spacing: 1px;
     border: none;
-    border-radius: 12px;
-    background: linear-gradient(180deg, #ffd400, #f0b400);
+    background: #ffd400;
     color: #231900;
     cursor: pointer;
-    box-shadow: 0 6px 18px rgba(255, 212, 0, 0.4);
   }
-  .entry-card button:active { transform: scale(0.97); }
 
   /* ============ App ============ */
   #app { max-width: 480px; margin: 0 auto; padding: 14px 14px 40px; }
 
-  header { text-align: center; margin-bottom: 14px; }
+  header { text-align: center; margin-bottom: 16px; }
   header .banner {
     width: 100%;
-    border-radius: 14px;
     display: block;
-    box-shadow: 0 4px 22px rgba(15, 40, 80, 0.15);
   }
-  main { text-align: center; }
 
-  .scene {
-    position: relative;
-    width: min(88vw, 420px);
-    aspect-ratio: 1 / 1;
-    margin: 0 auto 26px;
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    box-shadow: 0 10px 34px rgba(15, 40, 80, 0.12);
-    background: #ffffff;
-  }
-  .scene img {
+  /* contenedor cuadrado fijo: el ::before fija la altura,
+     así la imagen nunca mueve el layout */
+  .square { position: relative; }
+  .square::before { content: ""; display: block; padding-top: 100%; }
+  .square img {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -131,88 +101,70 @@
     object-fit: contain;
   }
 
-  /* destello de apagón */
-  #blackout {
-    position: fixed;
-    inset: 0;
-    background: #000;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 40;
-    transition: opacity .12s ease;
-  }
-  body.blacking #blackout { opacity: .85; }
+  main { text-align: center; }
 
-  /* ============ Breaker ============ */
+  /* ============ Breaker (arriba del mapa) ============ */
   .breaker-btn {
-    position: relative;
-    display: block;
     width: min(46vw, 210px);
-    aspect-ratio: 1 / 1;
     margin: 0 auto;
     padding: 0;
     border: none;
-    background: transparent;
+    background: none;
     cursor: pointer;
     touch-action: manipulation;
     user-select: none;
   }
-  .breaker-btn img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    pointer-events: none;
+  .breaker-btn img { pointer-events: none; }
+
+  /* ============ Mapa ============ */
+  .scene {
+    width: min(88vw, 420px);
+    margin: 10px auto 0;
+    border: 1px solid #e5e5e5;
+    background: #ffffff;
   }
 
+  /* ============ Estado y contador ============ */
   .status {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 22px;
+    display: inline-block;
+    margin-top: 18px;
     padding: 9px 18px;
-    border-radius: 999px;
     font-size: 15px;
     font-weight: 600;
-    background: #eef3fa;
-    border: 1px solid #d4ddec;
-    transition: background .3s, color .3s, border-color .3s;
+    background: #f5f7fa;
+    border: 1px solid #dfe5ee;
   }
-  .status.on  { color: #9a6f00; border-color: rgba(201, 143, 0, .5); }
-  .status.off { color: #64748f; border-color: rgba(20, 40, 80, .12); }
+  .status.on  { color: #9a6f00; }
+  .status.off { color: #64748f; }
 
   .counter {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
-    margin-top: 18px;
+    margin-top: 16px;
   }
-  .counter-label { color: var(--dim); font-size: 15px; }
+  .counter-label { color: #5f6f8a; font-size: 15px; }
   .counter-value {
     font-size: 34px;
     font-weight: 800;
-    color: var(--gold);
+    color: #c98f00;
     min-width: 60px;
-    text-shadow: 0 0 18px rgba(201, 143, 0, .3);
   }
   .counter-value.pop { animation: pop .35s ease; }
 
   /* ============ Ranking ============ */
   .ranking {
-    margin-top: 34px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
+    margin-top: 30px;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
     padding: 18px 14px;
-    box-shadow: 0 10px 34px rgba(15, 40, 80, 0.12);
   }
   .ranking h2 {
     text-align: center;
     font-size: 19px;
     letter-spacing: 2px;
-    color: var(--navy);
+    color: #0b4f9e;
     margin-bottom: 10px;
   }
 
@@ -220,36 +172,34 @@
     text-align: center;
     font-size: 14px;
     color: #8a6500;
-    background: rgba(255, 212, 0, 0.1);
-    border: 1px dashed rgba(201, 143, 0, .45);
-    border-radius: 10px;
+    background: #fff7d6;
+    border: 1px dashed #e0c56a;
     padding: 8px 10px;
     margin-bottom: 14px;
   }
-  .empty { text-align: center; color: var(--dim); font-size: 14px; padding: 14px 0; }
+  .empty { text-align: center; color: #5f6f8a; font-size: 14px; padding: 14px 0; }
 
   table { width: 100%; border-collapse: collapse; font-size: 15px; }
   thead th {
-    background: rgba(255, 212, 0, 0.16);
+    background: #fff3c2;
     color: #8a6500;
     padding: 10px 6px;
     font-size: 13px;
     letter-spacing: 1px;
-    border-bottom: 2px solid rgba(201, 143, 0, .4);
+    border-bottom: 2px solid #e0c56a;
   }
   tbody td {
     padding: 11px 6px;
     text-align: center;
-    border-bottom: 1px solid #e6ecf4;
+    border-bottom: 1px solid #eceff4;
   }
-  tbody tr:nth-child(even) { background: rgba(20, 40, 80, 0.03); }
-  tbody tr.me { background: rgba(255, 212, 0, 0.14); font-weight: 700; color: #6b4e00; }
+  tbody tr:nth-child(even) { background: #f7f9fc; }
+  tbody tr.me { background: #fff3c2; font-weight: 700; color: #6b4e00; }
   tbody tr.me td:first-child { border-left: 4px solid #ffd400; }
-  .rank-num { color: var(--dim); }
-  .rank-high { color: var(--gold); font-weight: 800; }
+  .rank-num { color: #5f6f8a; }
+  .rank-high { color: #c98f00; font-weight: 800; }
 
   /* ============ Animaciones ============ */
-  @keyframes rise { from { transform: translateY(16px); opacity: 0; } to { transform: none; opacity: 1; } }
   @keyframes pop {
     0% { transform: scale(1); }
     40% { transform: scale(1.45); }
@@ -275,14 +225,14 @@
     <img class="banner" src="img/5.png" alt="Corpoelec">
   </header>
 
-  <main id="mainArea">
-    <div class="scene">
-      <img id="mapImg" src="img/Mapa con luz.png" alt="Mapa">
-    </div>
-
-    <button id="breakerBtn" class="breaker-btn" aria-label="Interruptor">
+  <main>
+    <button id="breakerBtn" class="breaker-btn square" aria-label="Interruptor">
       <img id="breakerImg" src="img/Breaker arriba.png" alt="Interruptor">
     </button>
+
+    <div class="scene square">
+      <img id="mapImg" src="img/Mapa con luz.png" alt="Mapa">
+    </div>
 
     <p id="status" class="status on">⚡ Luz encendida</p>
 
@@ -304,8 +254,6 @@
     </table>
   </section>
 </div>
-
-<div id="blackout"></div>
 
 <script>
 (function () {
@@ -436,20 +384,14 @@
     statusEl.textContent = powerOn ? '⚡ Luz encendida' : '🔌 Apagón';
     statusEl.className = 'status ' + (powerOn ? 'on' : 'off');
 
-    if (!powerOn) {
-      // destello de apagón
-      document.body.classList.add('blacking');
-      setTimeout(function () { document.body.classList.remove('blacking'); }, 160);
-
-      if (player) {
-        player.score += 1;
-        counterValue.textContent = player.score;
-        counterValue.classList.remove('pop');
-        void counterValue.offsetWidth; // reinicia la animación
-        counterValue.classList.add('pop');
-        upsertScore(player.name, player.score);
-        renderRanking();
-      }
+    if (!powerOn && player) {
+      player.score += 1;
+      counterValue.textContent = player.score;
+      counterValue.classList.remove('pop');
+      void counterValue.offsetWidth; // reinicia la animación
+      counterValue.classList.add('pop');
+      upsertScore(player.name, player.score);
+      renderRanking();
     }
   }
 
